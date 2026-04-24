@@ -1,0 +1,4 @@
+room_number,name,capacity,room_type
+R101,测试楼101,50,普通教室
+R102,测试楼102,45,多媒体教室
+R103,测试楼103,40,机房

@@ -1,0 +1,494 @@
+/**
+ * ========================================
+ *  排课系统 - 课表通用样式 (v2.0)
+ *  基于 Design Tokens 系统重构
+ * ========================================
+ */
+
+@import './design-tokens.css';
+
+/* ===== 页面容器 ===== */
+.schedule-page {
+  padding: 24px;
+  background: var(--bg-page);
+  min-height: 100%;
+}
+
+/* ===== 顶部操作栏 ===== */
+.schedule-toolbar {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  margin-bottom: 20px;
+  flex-wrap: wrap;
+  gap: 12px;
+}
+
+.schedule-toolbar .page-title {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  margin: 0;
+  font-size: var(--font-size-xl);
+  font-weight: var(--font-weight-bold);
+  color: var(--text-primary);
+  letter-spacing: 0.3px;
+}
+
+.schedule-toolbar .page-title .title-icon {
+  font-size: 22px;
+}
+
+.toolbar-controls {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+}
+
+/* ===== 周次选择器 ===== */
+.week-selector {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  background: var(--bg-card);
+  padding: 6px 12px;
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-sm);
+  transition: box-shadow var(--duration-base) var(--ease-out);
+}
+
+.week-selector:hover {
+  box-shadow: var(--shadow-base);
+}
+
+.week-selector .week-nav-btn {
+  width: 28px;
+  height: 28px;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.week-selector .week-text {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+  min-width: 140px;
+  text-align: center;
+}
+
+/* ===== 信息栏 ===== */
+.info-bar {
+  padding: 14px 20px;
+  border-radius: var(--radius-lg);
+  margin-bottom: 20px;
+  display: flex;
+  align-items: center;
+  gap: 16px;
+  font-size: var(--font-size-base);
+  color: var(--text-inverse);
+  box-shadow: var(--shadow-md);
+  flex-wrap: wrap;
+  position: relative;
+  overflow: hidden;
+}
+
+.info-bar::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background: linear-gradient(135deg, rgba(255,255,255,0.08) 0%, transparent 60%);
+  pointer-events: none;
+}
+
+.info-bar .info-item {
+  display: flex;
+  align-items: center;
+  gap: 6px;
+  position: relative;
+  z-index: 1;
+}
+
+.info-bar .info-label {
+  opacity: 0.85;
+  font-size: var(--font-size-sm);
+}
+
+.info-bar .info-value {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+}
+
+.info-bar .info-sep {
+  opacity: 0.35;
+  font-size: var(--font-size-base);
+}
+
+/* ===== 课表容器 ===== */
+.schedule-wrapper {
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-base);
+  overflow: hidden;
+  overflow-x: auto;
+  transition: box-shadow var(--duration-base) var(--ease-out);
+}
+
+.schedule-wrapper:hover {
+  box-shadow: var(--shadow-md);
+}
+
+/* ===== 课表表格 ===== */
+.weekly-schedule {
+  width: 100%;
+  border-collapse: separate;
+  border-spacing: 0;
+  min-width: 900px;
+}
+
+.weekly-schedule thead th {
+  background: linear-gradient(180deg, var(--color-neutral-1) 0%, var(--color-neutral-2) 100%);
+  padding: 14px 8px;
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-base);
+  color: var(--text-primary);
+  border-bottom: 2px solid var(--border-base);
+  position: sticky;
+  top: 0;
+  z-index: 1;
+}
+
+.period-col {
+  width: 100px !important;
+  min-width: 100px;
+  background: linear-gradient(180deg, var(--color-neutral-1) 0%, var(--color-neutral-2) 100%) !important;
+}
+
+.day-col {
+  min-width: 160px;
+}
+
+.day-header {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2px;
+}
+
+.day-name {
+  font-size: var(--font-size-base);
+  font-weight: var(--font-weight-semibold);
+  color: var(--text-primary);
+}
+
+.day-date {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  font-weight: var(--font-weight-regular);
+}
+
+.period-label {
+  background: var(--color-neutral-1);
+  vertical-align: middle;
+  padding: 12px 8px;
+  text-align: center;
+  border-right: 1px solid var(--border-base);
+}
+
+.section-label {
+  font-size: var(--font-size-sm);
+  font-weight: var(--font-weight-bold);
+  color: var(--color-primary-6);
+}
+
+.section-time {
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  margin-top: 4px;
+}
+
+.weekly-schedule tbody td {
+  border: 1px solid var(--border-base);
+  padding: 4px;
+  text-align: center;
+  vertical-align: middle;
+  height: 90px;
+  background: var(--bg-card);
+  transition: background-color var(--duration-base) var(--ease-out);
+}
+
+.weekly-schedule tbody tr:hover td {
+  background-color: var(--bg-hover);
+}
+
+/* ===== 时段分隔线 ===== */
+.section-break td {
+  border-bottom: 3px solid var(--border-dark);
+  position: relative;
+}
+
+/* 在分隔线后添加装饰性虚线 */
+.section-break td::after {
+  content: '';
+  position: absolute;
+  bottom: -4px;
+  left: 0;
+  right: 0;
+  height: 1px;
+  border-top: 1px dashed var(--color-neutral-4);
+  pointer-events: none;
+}
+
+/* 上午/下午/晚上的分隔标识行（可选） */
+.period-divider {
+  height: 24px !important;
+  background: linear-gradient(90deg, var(--color-neutral-1) 0%, var(--color-neutral-2) 50%, var(--color-neutral-1) 100%) !important;
+}
+
+.period-divider td {
+  border-bottom: 1px solid var(--border-base) !important;
+  padding: 0 !important;
+  height: 24px !important;
+  background: none !important;
+}
+
+.period-divider-text {
+  display: block;
+  width: 60px;
+  margin: 0 auto;
+  font-size: var(--font-size-xs);
+  color: var(--text-secondary);
+  letter-spacing: 4px;
+  text-align: center;
+}
+
+/* ===== 课程卡片 ===== */
+.course-card {
+  margin: 2px;
+  padding: 10px 10px 8px;
+  border-radius: var(--radius-base);
+  font-size: var(--font-size-sm);
+  min-height: 76px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  text-align: left;
+  line-height: 1.6;
+  transition: all var(--duration-slow) var(--ease-out);
+  cursor: pointer;
+  border-left: 3px solid var(--course-border, var(--color-primary-6));
+  background: var(--course-bg, var(--color-neutral-1));
+  color: var(--course-text, var(--text-primary));
+  position: relative;
+  box-shadow: var(--shadow-xs);
+  overflow: hidden;
+}
+
+/* 课程卡片内层装饰 */
+.course-card::before {
+  content: '';
+  position: absolute;
+  top: 0;
+  right: 0;
+  width: 32px;
+  height: 32px;
+  background: linear-gradient(135deg, transparent 40%, rgba(255,255,255,0.2) 100%);
+  border-radius: var(--radius-sm) 0 var(--radius-sm) 0;
+  pointer-events: none;
+}
+
+.course-card:hover {
+  transform: translateY(-2px) scale(1.02);
+  box-shadow: var(--shadow-md);
+  z-index: 2;
+  border-left-width: 4px;
+  padding-left: 9px;
+}
+
+.course-card:active {
+  transform: translateY(0) scale(0.98);
+  box-shadow: var(--shadow-xs);
+  transition-duration: var(--duration-fast);
+}
+
+/* 课程信息层次 */
+.course-name {
+  font-weight: var(--font-weight-semibold);
+  font-size: var(--font-size-sm);
+  margin-bottom: 4px;
+  color: var(--course-text, var(--text-primary));
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  letter-spacing: 0.2px;
+}
+
+.course-detail {
+  font-size: var(--font-size-xs);
+  opacity: 0.85;
+  color: var(--course-text, var(--text-primary));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  font-weight: var(--font-weight-medium);
+}
+
+.course-detail .icon {
+  font-size: 12px;
+  flex-shrink: 0;
+}
+
+.course-weeks {
+  font-size: 10px;
+  opacity: 0.7;
+  margin-top: 3px;
+  color: var(--course-text, var(--text-primary));
+  font-weight: var(--font-weight-regular);
+}
+
+.course-room {
+  font-size: 10px;
+  opacity: 0.65;
+  margin-top: 2px;
+  color: var(--course-text, var(--text-primary));
+  display: flex;
+  align-items: center;
+  gap: 4px;
+  font-weight: var(--font-weight-regular);
+}
+
+.course-room .icon {
+  font-size: 11px;
+  flex-shrink: 0;
+}
+
+/* 课程类型标签（可选） */
+.course-type-badge {
+  position: absolute;
+  top: 4px;
+  right: 4px;
+  padding: 1px 6px;
+  border-radius: 8px;
+  font-size: 9px;
+  font-weight: var(--font-weight-semibold);
+  color: var(--course-text, var(--text-primary));
+  background: rgba(255,255,255,0.6);
+  backdrop-filter: blur(4px);
+  opacity: 0.8;
+}
+
+/* ===== 空单元格 ===== */
+.empty-slot {
+  height: 100%;
+  min-height: 76px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(135deg, var(--color-neutral-1) 0%, var(--bg-card) 100%);
+  border-radius: var(--radius-sm);
+  border: 1.5px dashed var(--border-base);
+  color: var(--text-placeholder);
+  font-size: var(--font-size-base);
+  transition: all var(--duration-base) var(--ease-out);
+}
+
+.empty-slot:hover {
+  border-color: var(--color-neutral-5);
+  background: var(--bg-card);
+}
+
+.empty-slot span {
+  opacity: 0.6;
+}
+
+/* ===== 空提示 & 加载 ===== */
+.empty-tip,
+.loading-tip {
+  text-align: center;
+  padding: 80px 0;
+  color: var(--text-secondary);
+  background: var(--bg-card);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-base);
+}
+
+.loading-tip .loading-icon {
+  margin-bottom: 16px;
+}
+
+.loading-tip p {
+  margin-top: 16px;
+  font-size: var(--font-size-base);
+}
+
+/* ===== 打印样式 ===== */
+@media print {
+  .schedule-toolbar,
+  .toolbar-controls,
+  .week-selector {
+    display: none !important;
+  }
+  
+  .schedule-page {
+    padding: 0 !important;
+    background: var(--bg-card) !important;
+  }
+  
+  .schedule-wrapper {
+    box-shadow: var(--shadow-none) !important;
+    border-radius: var(--radius-none) !important;
+  }
+  
+  .info-bar {
+    box-shadow: var(--shadow-none) !important;
+    border: 1px solid var(--border-base) !important;
+    color: var(--text-primary) !important;
+    background: var(--color-neutral-1) !important;
+  }
+  
+  .info-bar .info-label,
+  .info-bar .info-value {
+    color: var(--text-primary) !important;
+  }
+  
+  .course-card {
+    break-inside: avoid;
+    box-shadow: var(--shadow-xs) !important;
+  }
+  
+  .course-card::before {
+    display: none !important;
+  }
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .schedule-page {
+    padding: 12px;
+  }
+  
+  .schedule-toolbar {
+    flex-direction: column;
+    align-items: flex-start;
+  }
+  
+  .toolbar-controls {
+    width: 100%;
+    justify-content: flex-start;
+  }
+  
+  .info-bar {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 8px;
+    padding: 12px 16px;
+  }
+}
