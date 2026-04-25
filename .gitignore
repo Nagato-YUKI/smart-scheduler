@@ -41,8 +41,8 @@ Thumbs.db
 # Node
 node_modules/
 
-# Database (可根据需要决定是否提交)
-# *.db
+# Database
+*.db
 
 # Environment variables
 .env
