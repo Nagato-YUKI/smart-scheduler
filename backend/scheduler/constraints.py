@@ -147,7 +147,7 @@ class ConstraintChecker:
             return False, f"时段 {week}/{day}/{period} 不可用"
         return True, ""
 
-    def _check_teacher_day_concentration(self, course, room_id: str, week: int,n                              day: str, period: str, schedule: Dict, *args) -> Tuple[float, str]:
+    def _check_teacher_day_concentration(self, course, room_id: str, week: int, day: str, period: str, schedule: Dict, *args) -> Tuple[float, str]:
         teacher_id = getattr(course, 'teacher_id', None)
         if not teacher_id:
             return 1.0, ""
