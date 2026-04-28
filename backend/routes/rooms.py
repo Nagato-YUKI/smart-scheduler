@@ -1,7 +1,7 @@
 from flask import Blueprint, request, jsonify
 from peewee_manager import Room
 
-rooms_bp = Blueprint('rooms', __name__, url_prefix='/rooms')
+rooms_bp = Blueprint('rooms', __name__)
 
 
 @rooms_bp.route('', methods=['GET'])

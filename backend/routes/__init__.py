@@ -10,10 +10,10 @@ __all__ = ['rooms_bp', 'teachers_bp', 'classes_bp', 'courses_bp', 'holidays_bp',
 
 
 def register_blueprints(app):
-    app.register_blueprint(rooms_bp, url_prefix='/api')
-    app.register_blueprint(teachers_bp, url_prefix='/api')
-    app.register_blueprint(classes_bp, url_prefix='/api')
-    app.register_blueprint(courses_bp, url_prefix='/api')
-    app.register_blueprint(holidays_bp, url_prefix='/api')
-    app.register_blueprint(schedule_bp, url_prefix='/api')
-    app.register_blueprint(import_bp)
+    app.register_blueprint(rooms_bp, url_prefix='/api/rooms')
+    app.register_blueprint(teachers_bp, url_prefix='/api/teachers')
+    app.register_blueprint(classes_bp, url_prefix='/api/classes')
+    app.register_blueprint(courses_bp, url_prefix='/api/courses')
+    app.register_blueprint(holidays_bp, url_prefix='/api/holidays')
+    app.register_blueprint(schedule_bp, url_prefix='/api/schedule')
+    app.register_blueprint(import_bp, url_prefix='/api/import')
