@@ -6,10 +6,16 @@ current_dir = os.path.dirname(os.path.abspath(__file__))
 if current_dir not in sys.path:
     sys.path.insert(0, current_dir)
 
+# 设置默认环境变量（如果未设置）
+if not os.environ.get("DB_TYPE"):
+    os.environ["DB_TYPE"] = "sqlite"
+    
+if not os.environ.get("DATABASE_URL"):
+    os.environ["DATABASE_URL"] = os.path.join(current_dir, "paike.db")
+
 # 自动初始化数据库
 def init_database():
     try:
-        from config import Config
         from peewee_manager import (
             Room, Teacher, SchoolClass, Course, Holiday, TeachingClass, ScheduleEntry, _database
         )
