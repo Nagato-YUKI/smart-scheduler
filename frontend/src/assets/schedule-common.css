@@ -232,7 +232,6 @@
   position: relative;
 }
 
-/* 在分隔线后添加装饰性虚线 */
 .section-break td::after {
   content: '';
   position: absolute;
@@ -244,7 +243,6 @@
   pointer-events: none;
 }
 
-/* 上午/下午/晚上的分隔标识行（可选） */
 .period-divider {
   height: 24px !important;
   background: linear-gradient(90deg, var(--color-neutral-1) 0%, var(--color-neutral-2) 50%, var(--color-neutral-1) 100%) !important;
@@ -289,7 +287,6 @@
   overflow: hidden;
 }
 
-/* 课程卡片内层装饰 */
 .course-card::before {
   content: '';
   position: absolute;
@@ -316,7 +313,6 @@
   transition-duration: var(--duration-fast);
 }
 
-/* 课程信息层次 */
 .course-name {
   font-weight: var(--font-weight-semibold);
   font-size: var(--font-size-sm);
@@ -370,7 +366,6 @@
   flex-shrink: 0;
 }
 
-/* 课程类型标签（可选） */
 .course-type-badge {
   position: absolute;
   top: 4px;

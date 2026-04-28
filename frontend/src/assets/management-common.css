@@ -183,7 +183,7 @@
   background-color: var(--color-primary-1) !important;
 }
 
-.management-page .el-table__row--striped:hover > td {
+.management-page .el-table--striped .el-table__row--striped:hover > td {
   background-color: transparent !important;
 }
 

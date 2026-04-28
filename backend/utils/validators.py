@@ -1,66 +1,57 @@
-from flask import jsonify
+# -*- coding: utf-8 -*-
+
+def validate_room_data(data):
+    errors = []
+    if not data.get('room_number'):
+        errors.append('教室编号不能为空')
+    if not data.get('name'):
+        errors.append('教室名称不能为空')
+    capacity = data.get('capacity')
+    if capacity is None or not isinstance(capacity, (int, float)) or capacity <= 0:
+        errors.append('教室容量必须为正整数')
+    room_type = data.get('room_type')
+    valid_types = ['normal', 'computer', 'lab', 'meeting', 'other']
+    if room_type and room_type not in valid_types:
+        errors.append(f'教室类型无效，可选值: {", ".join(valid_types)}')
+    return errors
 
 
-class ValidationError(Exception):
-    def __init__(self, message, status_code=400):
-        super().__init__(message)
-        self.message = message
-        self.status_code = status_code
+def validate_teacher_data(data):
+    errors = []
+    if not data.get('teacher_number'):
+        errors.append('教师工号不能为空')
+    if not data.get('name'):
+        errors.append('教师姓名不能为空')
+    max_sessions = data.get('max_weekly_sessions')
+    if max_sessions is not None:
+        if not isinstance(max_sessions, int) or max_sessions < 1:
+            errors.append('每周最大课次数必须为正整数')
+    return errors
 
 
-def handle_validation_error(error):
-    return jsonify({"error": error.message}), error.status_code
+def validate_class_data(data):
+    errors = []
+    if not data.get('class_number'):
+        errors.append('班级编号不能为空')
+    if not data.get('name'):
+        errors.append('班级名称不能为空')
+    student_count = data.get('student_count')
+    if student_count is None or not isinstance(student_count, (int, float)) or student_count <= 0:
+        errors.append('学生人数必须为正整数')
+    return errors
 
 
-def validate_teacher_weekly_sessions(teacher):
-    from peewee_manager import TeachingClass
-
-    teaching_classes = list(TeachingClass.select().where(TeachingClass.teacher == teacher))
-
-    if not teaching_classes:
-        return True, "教师暂无排课"
-
-    weekly_sessions = len(teaching_classes)
-
-    if weekly_sessions > teacher.max_weekly_sessions:
-        return False, f"教师每周课次({weekly_sessions})已超过上限({teacher.max_weekly_sessions})"
-
-    return True, f"教师每周课次正常({weekly_sessions}/{teacher.max_weekly_sessions})"
-
-
-def validate_teacher_course_count(teacher):
-    from peewee_manager import Course
-
-    current_courses = list(Course.select().where(Course.teacher == teacher))
-    current_count = len(current_courses)
-
-    if current_count > 2:
-        return False, f"教师可授课程门数({current_count})已超过上限(2)"
-
-    return True, f"教师可授课程门数正常({current_count}/2)"
-
-
-def validate_room_capacity(rooms, required_capacity):
-    if not rooms:
-        return False, "没有可用的教室"
-
-    total_capacity = sum(room.capacity for room in rooms if room.is_available)
-    available_count = sum(1 for room in rooms if room.is_available)
-
-    if available_count == 0:
-        return False, "没有可用的教室"
-
-    if total_capacity < required_capacity:
-        return False, f"教室总容量({total_capacity})不足({required_capacity})"
-
-    return True, f"教室满足需求(可用{available_count}间，总容量{total_capacity})"
-
-
-def validate_room_minimum_count(rooms, minimum_count):
-    available_rooms = [room for room in rooms if room.is_available]
-    available_count = len(available_rooms)
-
-    if available_count < minimum_count:
-        return False, f"可用教室数量({available_count})少于最低需求({minimum_count})"
-
-    return True, f"教室数量满足需求({available_count}/{minimum_count})"
+def validate_course_data(data):
+    errors = []
+    if not data.get('course_number'):
+        errors.append('课程编号不能为空')
+    if not data.get('name'):
+        errors.append('课程名称不能为空')
+    if not data.get('teacher_id'):
+        errors.append('教师ID不能为空')
+    if not data.get('class_id'):
+        errors.append('班级ID不能为空')
+    total_hours = data.get('total_hours')
+    if total_hours is None or not isinstance(total_hours, (int, float)) or total_hours <= 0:
+        errors.append('总课时必须为正整数')
+    return errors

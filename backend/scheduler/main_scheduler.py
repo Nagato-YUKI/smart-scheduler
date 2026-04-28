@@ -1,17 +1,25 @@
-from typing import Dict, List, Optional, Tuple
+import os
+from typing import List, Dict, Optional, Tuple
+from datetime import datetime, timedelta, date
+import logging
+from collections import defaultdict
+
 from .time_pool import TimePool
-from .holiday_manager import HolidayManager
 from .room_allocator import RoomAllocator
+from .holiday_manager import HolidayManager
 from .constraints import ConstraintChecker
 from .optimizer import ScheduleOptimizer
-from .validator import ScheduleValidator, ValidationResult
+from .validator import ScheduleValidator
 from .statistics import ScheduleStatistics
 
 
-class Course:
-    def __init__(self, course_id: str, name: str, teacher_id: str, class_id: str,
-                 required_hours: int, student_count: int = 30, room_type: str = "normal",
-                 fixed_room_id: str = None, priority: int = 0):
+class SchedulerCourse:
+    def __init__(self, course_id: str, name: str, teacher_id: str,
+                 class_id: str, required_hours: int = 64, student_count: int = 30,
+                 room_type: str = 'normal', priority: int = 0,
+                 preferred_days: List[str] = None, preferred_periods: List[str] = None,
+                 fixed_room_id: str = None, is_continuous: bool = False,
+                 max_continuous_sessions: int = 2):
         self.course_id = course_id
         self.name = name
         self.teacher_id = teacher_id
@@ -19,141 +27,88 @@ class Course:
         self.required_hours = required_hours
         self.student_count = student_count
         self.room_type = room_type
-        self.fixed_room_id = fixed_room_id
         self.priority = priority
-
-    def to_dict(self) -> Dict:
-        return {
-            "course_id": self.course_id,
-            "name": self.name,
-            "teacher_id": self.teacher_id,
-            "class_id": self.class_id,
-            "required_hours": self.required_hours,
-            "student_count": self.student_count,
-            "room_type": self.room_type,
-            "fixed_room_id": self.fixed_room_id,
-            "priority": self.priority,
-        }
-
-    def __repr__(self):
-        return f"Course({self.course_id}, {self.name}, hours={self.required_hours})"
+        self.preferred_days = preferred_days or ["monday", "tuesday", "wednesday", "thursday", "friday"]
+        self.preferred_periods = preferred_periods or ["morning", "afternoon", "evening"]
+        self.fixed_room_id = fixed_room_id
+        self.is_continuous = is_continuous
+        self.max_continuous_sessions = max_continuous_sessions
 
 
-class MainScheduler:
-    def __init__(self, start_date: str = None):
-        self.time_pool = TimePool(start_date)
-        self.holiday_manager = HolidayManager()
+class AdvancedScheduler:
+    def __init__(self):
+        self.time_pool = TimePool()
         self.room_allocator = RoomAllocator()
+        self.holiday_manager = HolidayManager()
         self.constraint_checker = ConstraintChecker()
         self.optimizer = ScheduleOptimizer()
         self.validator = ScheduleValidator()
         self.statistics = ScheduleStatistics()
-
         self.schedule = {}
-        self.failed_courses = []
-        self.scheduling_log = []
+        self.courses = []
+        self.logger = logging.getLogger(__name__)
 
-    def setup_holidays(self, holidays: Dict[str, Dict]):
-        self.holiday_manager.set_holidays(holidays)
-        self.holiday_manager.mark_holidays_in_pool(self.time_pool)
+    def add_course(self, course: SchedulerCourse):
+        self.courses.append(course)
 
-    def add_room(self, room_id: str, name: str, capacity: int, room_type: str = "normal",
-                 fixed: bool = False, building: str = ""):
-        self.room_allocator.add_room(room_id, name, capacity, room_type, fixed, building)
+    def add_room(self, room_id: str, name: str, capacity: int, room_type: str = 'normal'):
+        self.room_allocator.add_room(room_id, name, capacity, room_type)
 
-    def schedule_courses(self, courses: List[Course]) -> Dict:
+    def setup_holidays(self, holidays: Dict):
+        self.holiday_manager.add_holidays(holidays)
+        self.time_pool.update_holidays(self.holiday_manager)
+
+    def configure_schedule(self, start_date: datetime, total_weeks: int = 16,
+                           school_days: List[str] = None, periods: Dict = None):
+        self.time_pool = TimePool()
+        self.time_pool.generate_time_slots(start_date, total_weeks, school_days, periods)
+        self.time_pool.update_holidays(self.holiday_manager)
+        self.time_pool.initialize_teacher_constraints()
+
+    def schedule_courses(self, courses: List[SchedulerCourse]) -> Dict:
+        if not courses:
+            return self.schedule
+
+        self.courses = courses
         self.schedule = {}
-        self.failed_courses = []
-        self.scheduling_log = []
-
-        sorted_courses = self._sort_courses_by_priority(courses)
+        sorted_courses = sorted(self.courses, key=lambda c: getattr(c, 'priority', 0), reverse=True)
 
         for course in sorted_courses:
-            success = self._schedule_single_course(course)
+            try:
+                required_sessions = getattr(course, 'required_hours', 64)
+                scheduled_count = 0
+                candidate_slots = self._get_candidate_slots(course)
 
-            if success:
-                self.scheduling_log.append({
-                    "course_id": course.course_id,
-                    "status": "success",
-                    "message": f"课程 {course.course_id} 排课成功"
-                })
-            else:
-                self.failed_courses.append(course)
-                self.scheduling_log.append({
-                    "course_id": course.course_id,
-                    "status": "failed",
-                    "message": f"课程 {course.course_id} 排课失败"
-                })
+                for slot_info in candidate_slots:
+                    if scheduled_count >= required_sessions:
+                        break
+                    success = self._schedule_single_course(course, slot_info)
+                    if success:
+                        scheduled_count += 1
+
+                if scheduled_count < required_sessions:
+                    self.logger.warning(f"Course {course.course_id} scheduled {scheduled_count}/{required_sessions} sessions")
+
+            except Exception as e:
+                self.logger.error(f"Failed to schedule course {course.course_id}: {str(e)}")
 
         return self.schedule
 
-    def _schedule_single_course(self, course: Course) -> bool:
-        required_hours = course.required_hours
-        scheduled_hours = 0
+    def _schedule_single_course(self, course: SchedulerCourse, slot_info: Tuple) -> bool:
+        week, day, period, room_id = slot_info
+        room = self.room_allocator.get_room(room_id)
+        if room is None:
+            return False
 
-        preferred_periods = ["morning", "afternoon", "evening"]
-
-        for period in preferred_periods:
-            if scheduled_hours >= required_hours:
-                break
-
-            period_hours = self.time_pool.get_period_hours(period)
-            sessions_needed = (required_hours - scheduled_hours + period_hours - 1) // period_hours
-
-            for _ in range(sessions_needed):
-                if scheduled_hours >= required_hours:
-                    break
-
-                best_slot = self._find_best_slot_for_period(course, period)
-
-                if best_slot:
-                    week, day, period_name, room_id = best_slot
-                    self._assign_course_to_slot(course, week, day, period_name, room_id)
-                    scheduled_hours += self.time_pool.get_period_hours(period_name)
-                else:
-                    if period == "evening":
-                        return scheduled_hours > 0
-                    continue
-
-        return scheduled_hours >= required_hours
-
-    def _find_best_slot_for_period(self, course: Course, target_period: str) -> Optional[Tuple]:
-        candidate_slots = []
-
-        for week in range(1, 17):
-            for day in ["monday", "tuesday", "wednesday", "thursday", "friday"]:
-                if self.time_pool.is_available(week, day, target_period):
-                    rooms = self.room_allocator.find_available_rooms(
-                        required_capacity=course.student_count,
-                        required_type=course.room_type,
-                        week=week,
-                        day=day,
-                        period=target_period,
-                        fixed_room_id=course.fixed_room_id
-                    )
-
-                    for room in rooms:
-                        candidate_slots.append((week, day, target_period, room.room_id))
-
-        if not candidate_slots:
-            return None
-
-        best_slot = self.optimizer.find_best_slot(
-            course,
-            candidate_slots,
-            self.time_pool,
-            self.room_allocator,
-            self.schedule,
-            self.constraint_checker,
-            self.holiday_manager
+        is_valid, violations = self.constraint_checker.check_all_hard_constraints(
+            course, room_id, week, day, period, self.schedule,
+            self.time_pool, self.room_allocator, self.holiday_manager
         )
 
-        return best_slot
+        if not is_valid:
+            return False
 
-    def _assign_course_to_slot(self, course: Course, week: int, day: str, period: str,
-                               room_id: str):
         slot_key = f"W{week}_D{day}_{period}"
-
         if slot_key not in self.schedule:
             self.schedule[slot_key] = []
 
@@ -165,56 +120,59 @@ class MainScheduler:
             "week": week,
             "day": day,
             "period": period,
-            "course_name": course.name,
         })
 
         self.room_allocator.allocate_room(room_id, week, day, period)
         self.time_pool.remove_slot(week, day, period)
 
-    def _sort_courses_by_priority(self, courses: List[Course]) -> List[Course]:
-        return sorted(courses, key=lambda c: (c.priority, c.required_hours), reverse=True)
+        return True
 
-    def validate_schedule(self) -> ValidationResult:
-        courses = self._get_all_courses()
-        return self.validator.validate_schedule(
-            self.schedule, courses, self.time_pool,
-            self.room_allocator, self.holiday_manager
+    def _get_candidate_slots(self, course: SchedulerCourse) -> List[Tuple]:
+        candidates = []
+        for week in range(1, 17):
+            for day in course.preferred_days:
+                for period in course.preferred_periods:
+                    if self.time_pool.is_available(week, day, period):
+                        room_id = self.room_allocator.find_best_room(
+                            course.room_type, course.student_count
+                        )
+                        if room_id:
+                            candidates.append((week, day, period, room_id))
+        return candidates
+
+    def optimize_schedule(self) -> Dict:
+        return self.optimizer.optimize_schedule(
+            self.schedule, self.courses, self.time_pool,
+            self.room_allocator, self.constraint_checker, self.holiday_manager
         )
 
+    def validate_schedule(self) -> Dict:
+        result = self.validator.validate_schedule(
+            self.schedule, self.courses, self.time_pool,
+            self.room_allocator, self.holiday_manager
+        )
+        return result.to_dict()
+
     def get_statistics(self) -> Dict:
-        courses = self._get_all_courses()
-        return self.statistics.generate_full_report(self.schedule, courses)
+        return self.statistics.generate_full_report(self.schedule, self.courses)
 
-    def get_failed_courses(self) -> List[Course]:
-        return self.failed_courses
+    def get_teacher_schedule(self, teacher_id: str) -> Dict:
+        return self.statistics.get_teacher_schedule_summary(self.schedule, teacher_id)
 
-    def get_scheduling_log(self) -> List[Dict]:
-        return self.scheduling_log
+    def get_class_schedule(self, class_id: str) -> Dict:
+        return self.statistics.get_class_schedule_summary(self.schedule, class_id)
 
-    def reset(self):
-        self.schedule = {}
-        self.failed_courses = []
-        self.scheduling_log = []
-        self.time_pool.reset()
-        self.room_allocator.clear_schedule()
-
-    def _get_all_courses(self) -> List[Course]:
-        course_map = {}
-
+    def get_schedule_results(self) -> List[Dict]:
+        results = []
         for slot_key, sessions in self.schedule.items():
             for session in sessions:
-                course_id = session.get('course_id')
-                if course_id and course_id not in course_map:
-                    course_map[course_id] = Course(
-                        course_id=course_id,
-                        name=session.get('course_name', ''),
-                        teacher_id=session.get('teacher_id', ''),
-                        class_id=session.get('class_id', ''),
-                        required_hours=0,
-                    )
-
-        for course in self.failed_courses:
-            if course.course_id not in course_map:
-                course_map[course.course_id] = course
-
-        return list(course_map.values())
+                results.append({
+                    "teaching_class_id": session['course_id'],
+                    "week": session['week'],
+                    "day": session['day'],
+                    "period": session['period'],
+                    "room_id": session['room_id'],
+                    "teacher_id": session['teacher_id'],
+                    "class_id": session['class_id'],
+                })
+        return results

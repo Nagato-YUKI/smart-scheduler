@@ -1,7 +1,7 @@
 from flask import Flask
 from flask_cors import CORS
 from config import Config
-from peewee_manager import _database, Room, Teacher, SchoolClass, Course, Holiday, TeachingClass, ScheduleEntry
+from peewee_manager import _database
 
 
 def create_app(config_class=Config):

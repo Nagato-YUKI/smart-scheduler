@@ -1,11 +1,10 @@
-from routes.rooms import rooms_bp
-from routes.teachers import teachers_bp
-from routes.classes import classes_bp
-from routes.courses import courses_bp
-from routes.holidays import holidays_bp
-from routes.schedule import schedule_bp
-from routes.import_data import import_bp
-
+from .rooms import rooms_bp
+from .teachers import teachers_bp
+from .classes import classes_bp
+from .courses import courses_bp
+from .holidays import holidays_bp
+from .schedule import schedule_bp
+from .import_data import import_bp
 
 __all__ = ['rooms_bp', 'teachers_bp', 'classes_bp', 'courses_bp', 'holidays_bp', 'schedule_bp', 'import_bp']
 
