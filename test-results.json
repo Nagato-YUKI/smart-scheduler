@@ -1,0 +1,261 @@
+{
+  "homepageLoad": {
+    "status": "PASS",
+    "details": "HTTP状态: 200, 页面标题: \"智能排课系统\", 侧边栏: true, 主内容: false, Element Plus组件: true",
+    "menuItems": [
+      "首页",
+      "教室管理",
+      "教师管理",
+      "班级管理",
+      "课程管理",
+      "节假日管理",
+      "数据导入",
+      "课表查看",
+      "课时统计",
+      "调整课表"
+    ]
+  },
+  "navigation": [
+    {
+      "name": "首页",
+      "expectedPath": "/",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "教室管理",
+      "expectedPath": "/rooms",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "教师管理",
+      "expectedPath": "/teachers",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "班级管理",
+      "expectedPath": "/classes",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "课程管理",
+      "expectedPath": "/courses",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "节假日管理",
+      "expectedPath": "/holidays",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "数据导入",
+      "expectedPath": "/import",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "课表查看",
+      "expectedPath": "/schedules",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "课时统计",
+      "expectedPath": "/statistics",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    },
+    {
+      "name": "调整课表",
+      "expectedPath": "/adjust-schedule",
+      "status": "PASS",
+      "details": "跳转成功，当前URL: https://nagato-yuki.github.io/smart-scheduler/"
+    }
+  ],
+  "javascriptErrors": [
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/Home-DPJ9xm_t.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/RoomManagement-DB94mTyV.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/TeacherManagement-BqO6VpV5.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/ClassManagement-B1OolYFF.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/CourseManagement-_V4Ncb_i.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/HolidayManagement-CDViTXzp.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/DataImport-CXFRMNz6.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/ScheduleView-CYYvnOei.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/StatisticsView-CPOQX4sU.js",
+    "TypeError: Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/AdjustSchedule-CD0idX7l.js",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/Home-DPJ9xm_t.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/RoomManagement-DB94mTyV.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/TeacherManagement-BqO6VpV5.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/ClassManagement-B1OolYFF.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/CourseManagement-_V4Ncb_i.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/HolidayManagement-CDViTXzp.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/DataImport-CXFRMNz6.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/ScheduleView-CYYvnOei.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/StatisticsView-CPOQX4sU.js"
+    },
+    {
+      "type": "pageerror",
+      "message": "Failed to fetch dynamically imported module: https://nagato-yuki.github.io/smart-scheduler/assets/AdjustSchedule-CD0idX7l.js"
+    },
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Failed to load resource: the server responded with a status of 404 ()",
+    "Error: Unable to preload CSS for /smart-scheduler/assets/_plugin-vue_export-helper-C-bjXCXd.css\n    at HTMLLinkElement.<anonymous> (https://nagato-yuki.github.io/smart-scheduler/assets/index-DSeQm1hZ.js:92:21423)"
+  ],
+  "styleIssues": {
+    "status": "PASS",
+    "details": "样式表: 3, Element Plus: true"
+  },
+  "directUrlAccess": [
+    {
+      "name": "首页",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 200"
+    },
+    {
+      "name": "教室管理",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/rooms",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "教师管理",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/teachers",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "班级管理",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/classes",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "课程管理",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/courses",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "节假日管理",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/holidays",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "数据导入",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/import",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "课表查看",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/schedules",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "课时统计",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/statistics",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    },
+    {
+      "name": "调整课表",
+      "url": "https://nagato-yuki.github.io/smart-scheduler/adjust-schedule",
+      "status": "PASS",
+      "details": "加载成功，HTTP: 404, 经历了重定向"
+    }
+  ]
+}

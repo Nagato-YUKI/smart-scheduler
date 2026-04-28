@@ -1,0 +1,15 @@
+{
+  "name": "paike",
+  "version": "1.0.0",
+  "description": "> 基于Python/Flask后端 + Vue3前端的全栈排课解决方案，支持Excel数据导入和智能排课算法",
+  "main": "playwright-smart-scheduler.spec.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "dependencies": {
+    "@playwright/test": "^1.59.1"
+  }
+}
