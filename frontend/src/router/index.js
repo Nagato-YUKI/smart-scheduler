@@ -16,5 +16,5 @@ const routes = [
   { path: '/adjust-schedule', name: 'AdjustSchedule', component: () => import('../views/AdjustSchedule.vue') },
 ]
 
-const router = createRouter({ history: createWebHistory(), routes })
+const router = createRouter({ history: createWebHistory('/smart-scheduler/'), routes })
 export default router
