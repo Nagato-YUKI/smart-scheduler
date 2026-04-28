@@ -1,6 +1,12 @@
 from peewee import *
+from config import Config
 
-_database = SqliteDatabase(None)
+# 根据配置选择数据库类型
+if Config.DB_TYPE == "postgresql":
+    from playhouse.db_url import connect
+    _database = connect(Config.DATABASE)
+else:
+    _database = SqliteDatabase(Config.DATABASE)
 
 def get_db():
     return _database

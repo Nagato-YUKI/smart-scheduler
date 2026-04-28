@@ -15,7 +15,6 @@ from config import Config
 
 
 def create_tables(drop_first=False):
-    _database.init(Config.DATABASE)
     _database.connect()
     if drop_first:
         print('删除现有表...')
