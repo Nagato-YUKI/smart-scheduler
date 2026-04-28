@@ -113,9 +113,18 @@ def run_schedule():
 def get_schedule_results():
     page = request.args.get('page', 1, type=int)
     per_page = request.args.get('per_page', 50, type=int)
-    query = ScheduleEntry.select().join(TeachingClass).join(Course).join(SchoolClass).join(Teacher).join(Room)
-    total = query.count()
-    entries = query.paginate(page, per_page)
+    
+    if ScheduleEntry.select().count() == 0:
+        return jsonify({'results': [], 'total': 0, 'page': page, 'per_page': per_page})
+    
+    entries = (ScheduleEntry.select()
+        .join(TeachingClass)
+        .switch(ScheduleEntry)
+        .join(Room)
+    )
+    total = entries.count()
+    entries = entries.paginate(page, per_page)
+    
     results = []
     for entry in entries:
         results.append({
@@ -141,7 +150,17 @@ def get_schedule_results():
 @schedule_bp.route('/weekly', methods=['GET'])
 def get_weekly_schedule():
     week = request.args.get('week', 1, type=int)
-    entries = ScheduleEntry.select().where(ScheduleEntry.week == week).join(TeachingClass).join(Course).join(SchoolClass).join(Teacher).join(Room)
+    
+    if ScheduleEntry.select().where(ScheduleEntry.week == week).count() == 0:
+        return jsonify({'courses': []})
+    
+    entries = (ScheduleEntry.select()
+        .where(ScheduleEntry.week == week)
+        .join(TeachingClass)
+        .switch(ScheduleEntry)
+        .join(Room)
+    )
+    
     courses = []
     for entry in entries:
         courses.append({
@@ -184,9 +203,18 @@ def clear_schedule():
 @schedule_bp.route('/teacher/<int:teacher_id>', methods=['GET'])
 def get_teacher_schedule(teacher_id):
     week = request.args.get('week', 1, type=int)
-    entries = ScheduleEntry.select().join(TeachingClass).where(
-        (TeachingClass.teacher_id == teacher_id) & (ScheduleEntry.week == week)
-    ).join(Course).join(SchoolClass).join(Room)
+    
+    if ScheduleEntry.select().where(TeachingClass.teacher_id == teacher_id, ScheduleEntry.week == week).count() == 0:
+        return jsonify({'courses': []})
+    
+    entries = (ScheduleEntry.select()
+        .join(TeachingClass)
+        .switch(ScheduleEntry)
+        .join(Room)
+        .where(
+            (TeachingClass.teacher_id == teacher_id) & (ScheduleEntry.week == week)
+        )
+    )
     courses = []
     for entry in entries:
         courses.append({
@@ -205,9 +233,18 @@ def get_teacher_schedule(teacher_id):
 @schedule_bp.route('/room/<int:room_id>', methods=['GET'])
 def get_room_schedule(room_id):
     week = request.args.get('week', 1, type=int)
-    entries = ScheduleEntry.select().join(Room).where(
-        (Room.id == room_id) & (ScheduleEntry.week == week)
-    ).join(TeachingClass).join(Course).join(SchoolClass).join(Teacher)
+    
+    if ScheduleEntry.select().where(ScheduleEntry.room_id == room_id, ScheduleEntry.week == week).count() == 0:
+        return jsonify({'courses': []})
+    
+    entries = (ScheduleEntry.select()
+        .join(Room)
+        .switch(ScheduleEntry)
+        .join(TeachingClass)
+        .where(
+            (Room.id == room_id) & (ScheduleEntry.week == week)
+        )
+    )
     courses = []
     for entry in entries:
         courses.append({
@@ -226,9 +263,18 @@ def get_room_schedule(room_id):
 @schedule_bp.route('/class/<int:class_id>', methods=['GET'])
 def get_class_schedule(class_id):
     week = request.args.get('week', 1, type=int)
-    entries = ScheduleEntry.select().join(TeachingClass).where(
-        (TeachingClass.school_class_id == class_id) & (ScheduleEntry.week == week)
-    ).join(Course).join(SchoolClass).join(Teacher).join(Room)
+    
+    if ScheduleEntry.select().where(TeachingClass.school_class_id == class_id, ScheduleEntry.week == week).count() == 0:
+        return jsonify({'courses': []})
+    
+    entries = (ScheduleEntry.select()
+        .join(TeachingClass)
+        .switch(ScheduleEntry)
+        .join(Room)
+        .where(
+            (TeachingClass.school_class_id == class_id) & (ScheduleEntry.week == week)
+        )
+    )
     courses = []
     for entry in entries:
         courses.append({

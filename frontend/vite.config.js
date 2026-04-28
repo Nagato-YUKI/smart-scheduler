@@ -5,7 +5,7 @@ export default defineConfig({
   plugins: [vue()],
   base: '/smart-scheduler/',
   build: {
-    crossorigin: false,
+    modulePreload: false,
   },
   server: {
     port: 5173,
