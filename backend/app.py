@@ -1,8 +1,13 @@
 from flask import Flask
 from flask_cors import CORS
 from config import Config
-from peewee_manager import _database
+from peewee_manager import _database, Room, Teacher, SchoolClass, Course, Holiday, TeachingClass, ScheduleEntry
+import logging
 
+logging.basicConfig(
+    level=logging.INFO,
+    format='%(asctime)s - %(name)s - %(levelname)s - %(message)s'
+)
 
 def create_app(config_class=Config):
     app = Flask(__name__)

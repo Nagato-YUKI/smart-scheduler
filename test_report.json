@@ -1,0 +1,254 @@
+{
+  "test_time": "2026-04-29 04:20:17",
+  "total_tests": 28,
+  "passed": 23,
+  "failed": 5,
+  "pass_rate": 82.14,
+  "test_results": [
+    {
+      "id": "TC-001",
+      "name": "后端服务健康检查",
+      "status": "PASS",
+      "detail": "响应: {'status': 'ok'}",
+      "severity": ""
+    },
+    {
+      "id": "TC-101",
+      "name": "综合Excel导入API",
+      "status": "PASS",
+      "detail": "状态码: 200, 总导入: 214条, 错误: None",
+      "severity": ""
+    },
+    {
+      "id": "TC-102",
+      "name": "验证教室数据导入",
+      "status": "PASS",
+      "detail": "导入20间教室, 数据库中总教室数: 20间 (包含存量)",
+      "severity": ""
+    },
+    {
+      "id": "TC-103",
+      "name": "验证教师数量",
+      "status": "PASS",
+      "detail": "实际: 25名, 预期: 25名",
+      "severity": ""
+    },
+    {
+      "id": "TC-104",
+      "name": "验证班级数据导入",
+      "status": "PASS",
+      "detail": "导入25个班级, 数据库中总班级数: 25个 (包含存量)",
+      "severity": ""
+    },
+    {
+      "id": "TC-105",
+      "name": "验证节假日数量",
+      "status": "PASS",
+      "detail": "实际: 19条, 预期: 19条",
+      "severity": ""
+    },
+    {
+      "id": "TC-106",
+      "name": "节假日数据类型完整性",
+      "status": "PASS",
+      "detail": "Excel中包含: 元旦, 国庆节, 春节, 中秋节",
+      "severity": ""
+    },
+    {
+      "id": "TC-107",
+      "name": "验证课程数据导入",
+      "status": "PASS",
+      "detail": "导入课程: 125门",
+      "severity": ""
+    },
+    {
+      "id": "TC-201",
+      "name": "排课API执行",
+      "status": "PASS",
+      "detail": "状态码: 200, 成功: 125, 失败: 0, 总记录: 2000",
+      "severity": ""
+    },
+    {
+      "id": "TC-202",
+      "name": "课表记录数查询",
+      "status": "PASS",
+      "detail": "总记录数: 2000",
+      "severity": ""
+    },
+    {
+      "id": "TC-203",
+      "name": "获取全部课表记录",
+      "status": "PASS",
+      "detail": "共获取 2000 条记录",
+      "severity": ""
+    },
+    {
+      "id": "TC-204",
+      "name": "节假日无排课",
+      "status": "PASS",
+      "detail": "节假日排课: 0条, 非节假日: 2000条",
+      "severity": ""
+    },
+    {
+      "id": "TC-205",
+      "name": "所有教师都有排课",
+      "status": "PASS",
+      "detail": "有课教师: 25/25",
+      "severity": ""
+    },
+    {
+      "id": "TC-206",
+      "name": "周一/四/五排课分布",
+      "status": "PASS",
+      "detail": "周一: 576节, 周二: 576节, 周三: 304节, 周四: 96节, 周五: 448节",
+      "severity": ""
+    },
+    {
+      "id": "TC-207",
+      "name": "教室利用率",
+      "status": "PASS",
+      "detail": "平均利用率: 62.1%, 平均每时段使用教室: 12.4/20",
+      "severity": ""
+    },
+    {
+      "id": "TC-208",
+      "name": "教师带班数量(3-5)",
+      "status": "PASS",
+      "detail": "张伟:5, 何静:5, 马超:5, 陈静:5, 林峰:5, 李娜:5, 王芳:5, 黄丽:5, 周婷:5, 谢磊:5... 等25位教师",
+      "severity": ""
+    },
+    {
+      "id": "TC-209",
+      "name": "周课表API变量作用域审查",
+      "status": "FAIL",
+      "detail": "semester_start在get_weekly_schedule中未定义，导致500错误",
+      "severity": "严重"
+    },
+    {
+      "id": "TC-210",
+      "name": "clear-all接口合理性审查",
+      "status": "FAIL",
+      "detail": "clear-all应只清除课表记录，不应清除基础数据",
+      "severity": "一般"
+    },
+    {
+      "id": "TC-301",
+      "name": "班级课表查询API",
+      "status": "FAIL",
+      "detail": "状态码: 500, 响应: <!doctype html>\n<html lang=en>\n  <head>\n    <title>NameError: name &#39;semester_start&#39; is not defined\n // Werkzeug Debugger</title>\n    <link rel=\"stylesheet\" href=\"?__debugger__=yes&amp;cmd=reso",
+      "severity": "严重"
+    },
+    {
+      "id": "TC-302",
+      "name": "教师课表查询API",
+      "status": "FAIL",
+      "detail": "状态码: 500, 响应: <!doctype html>\n<html lang=en>\n  <head>\n    <title>NameError: name &#39;semester_start&#39; is not defined\n // Werkzeug Debugger</title>\n    <link rel=\"stylesheet\" href=\"?__debugger__=yes&amp;cmd=reso",
+      "severity": "严重"
+    },
+    {
+      "id": "TC-303",
+      "name": "教室课表查询API",
+      "status": "FAIL",
+      "detail": "状态码: 500, 响应: <!doctype html>\n<html lang=en>\n  <head>\n    <title>NameError: name &#39;semester_start&#39; is not defined\n // Werkzeug Debugger</title>\n    <link rel=\"stylesheet\" href=\"?__debugger__=yes&amp;cmd=reso",
+      "severity": "严重"
+    },
+    {
+      "id": "TC-304",
+      "name": "课表查询返回数据格式",
+      "status": "PASS",
+      "detail": "包含所有必要字段: results, total, pages, current_page",
+      "severity": ""
+    },
+    {
+      "id": "TC-401",
+      "name": "清除课表数据",
+      "status": "PASS",
+      "detail": "响应: {'message': '所有数据已清空'}",
+      "severity": ""
+    },
+    {
+      "id": "TC-401b",
+      "name": "验证课表已清空",
+      "status": "PASS",
+      "detail": "清除前: 2000条, 清除后: 0条",
+      "severity": ""
+    },
+    {
+      "id": "TC-402a",
+      "name": "重新导入数据",
+      "status": "PASS",
+      "detail": "导入214条记录",
+      "severity": ""
+    },
+    {
+      "id": "TC-402",
+      "name": "重新排课执行",
+      "status": "PASS",
+      "detail": "成功: 125, 失败: 0, 总记录: 2000",
+      "severity": ""
+    },
+    {
+      "id": "TC-403",
+      "name": "重新排课后数据一致性",
+      "status": "PASS",
+      "detail": "两次排课记录一致: 2000条 = 2000条",
+      "severity": ""
+    },
+    {
+      "id": "TC-501",
+      "name": "前端页面正常加载",
+      "status": "PASS",
+      "detail": "状态码: 200, 页面大小: 425字节",
+      "severity": ""
+    }
+  ],
+  "defects": [
+    {
+      "id": "BUG-014",
+      "title": "周课表查询API semester_start变量未定义",
+      "severity": "严重",
+      "priority": "高",
+      "steps": "GET /api/schedule/weekly (任意参数)",
+      "expected": "返回周课表数据",
+      "actual": "schedule.py中semester_start仅在run_schedule()函数内定义，get_weekly_schedule()函数中引用导致NameError"
+    },
+    {
+      "id": "BUG-015",
+      "title": "clear-all接口清除范围过大",
+      "severity": "一般",
+      "priority": "中",
+      "steps": "POST /api/schedule/clear-all",
+      "expected": "仅清除课表排课记录",
+      "actual": "当前实现同时清除ScheduleEntry、TeachingClass、Course、Holiday、SchoolClass、Teacher、Room全部数据，重新排课需重新导入所有基础数据"
+    },
+    {
+      "id": "BUG-011",
+      "title": "班级课表查询API返回500",
+      "severity": "严重",
+      "priority": "高",
+      "steps": "GET /api/schedule/weekly?class_id=1",
+      "expected": "返回200及周课表数据",
+      "actual": "返回500: <!doctype html>\n<html lang=en>\n  <head>\n    <title>NameError: name &#39;semester_start&#39; is not defined\n // Werkzeug Debugger</title>\n    <link rel=\"stylesheet\" href=\"?__debugger__=yes&amp;cmd=reso"
+    },
+    {
+      "id": "BUG-012",
+      "title": "教师课表查询API返回500",
+      "severity": "严重",
+      "priority": "高",
+      "steps": "GET /api/schedule/weekly?teacher_id=1",
+      "expected": "返回200及周课表数据",
+      "actual": "返回500: <!doctype html>\n<html lang=en>\n  <head>\n    <title>NameError: name &#39;semester_start&#39; is not defined\n // Werkzeug Debugger</title>\n    <link rel=\"stylesheet\" href=\"?__debugger__=yes&amp;cmd=reso"
+    },
+    {
+      "id": "BUG-013",
+      "title": "教室课表查询API返回500",
+      "severity": "严重",
+      "priority": "高",
+      "steps": "GET /api/schedule/weekly?room_id=1",
+      "expected": "返回200及周课表数据",
+      "actual": "返回500: <!doctype html>\n<html lang=en>\n  <head>\n    <title>NameError: name &#39;semester_start&#39; is not defined\n // Werkzeug Debugger</title>\n    <link rel=\"stylesheet\" href=\"?__debugger__=yes&amp;cmd=reso"
+    }
+  ],
+  "conclusion": "不通过",
+  "recommendation": "需修复致命/严重缺陷后重新测试"
+}

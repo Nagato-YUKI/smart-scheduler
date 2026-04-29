@@ -1,0 +1,529 @@
+{
+  "test_time": "2026-04-29 00:20:42",
+  "total": 65,
+  "passed": 63,
+  "failed": 2,
+  "skipped": 0,
+  "details": [
+    {
+      "case_id": "API-001",
+      "name": "健康检查接口",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-002",
+      "name": "创建教室",
+      "status": "PASS",
+      "expected": "201 Created",
+      "actual": "201, ID=8",
+      "notes": ""
+    },
+    {
+      "case_id": "API-003",
+      "name": "查询教室列表",
+      "status": "PASS",
+      "expected": "200 + rooms字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-004",
+      "name": "查询单个教室",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-005",
+      "name": "更新教室",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-006",
+      "name": "删除教室",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-007",
+      "name": "创建教师",
+      "status": "PASS",
+      "expected": "201 Created",
+      "actual": "201, ID=7",
+      "notes": ""
+    },
+    {
+      "case_id": "API-008",
+      "name": "查询教师列表",
+      "status": "PASS",
+      "expected": "200 + teachers字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-009",
+      "name": "查询单个教师",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-010",
+      "name": "更新教师",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-011",
+      "name": "删除教师",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-012",
+      "name": "创建班级",
+      "status": "PASS",
+      "expected": "201 Created",
+      "actual": "201, ID=6",
+      "notes": ""
+    },
+    {
+      "case_id": "API-013",
+      "name": "查询班级列表",
+      "status": "PASS",
+      "expected": "200 + classes字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-014",
+      "name": "查询单个班级",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-015",
+      "name": "更新班级",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-016",
+      "name": "删除班级",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-017",
+      "name": "创建课程-准备教师",
+      "status": "PASS",
+      "expected": "使用已有教师",
+      "actual": "ID=1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-018",
+      "name": "创建课程-准备班级",
+      "status": "PASS",
+      "expected": "使用已有班级",
+      "actual": "ID=1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-019",
+      "name": "创建课程",
+      "status": "PASS",
+      "expected": "201 Created",
+      "actual": "201, ID=7",
+      "notes": ""
+    },
+    {
+      "case_id": "API-020",
+      "name": "查询课程列表",
+      "status": "PASS",
+      "expected": "200 + courses字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-021",
+      "name": "查询单个课程",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-022",
+      "name": "更新课程",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-023",
+      "name": "删除课程",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-024",
+      "name": "创建节假日",
+      "status": "PASS",
+      "expected": "201 Created",
+      "actual": "201, ID=3",
+      "notes": ""
+    },
+    {
+      "case_id": "API-025",
+      "name": "查询节假日列表",
+      "status": "PASS",
+      "expected": "200 + holidays字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-026",
+      "name": "查询单个节假日",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-027",
+      "name": "更新节假日",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-028",
+      "name": "删除节假日",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-029",
+      "name": "排课-创建教室",
+      "status": "PASS",
+      "expected": "使用已有",
+      "actual": "ID=1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-030",
+      "name": "排课-创建教师",
+      "status": "PASS",
+      "expected": "使用已有",
+      "actual": "ID=1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-031",
+      "name": "排课-创建班级",
+      "status": "PASS",
+      "expected": "使用已有",
+      "actual": "ID=1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-032",
+      "name": "排课-创建课程",
+      "status": "PASS",
+      "expected": "使用已有",
+      "actual": "ID=1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-033",
+      "name": "执行排课",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "成功: 0, 失败: 1",
+      "notes": ""
+    },
+    {
+      "case_id": "API-034",
+      "name": "查询排课结果",
+      "status": "PASS",
+      "expected": "200 + results字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-035",
+      "name": "查询周课表",
+      "status": "PASS",
+      "expected": "200 + courses字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "API-036",
+      "name": "查询统计信息",
+      "status": "PASS",
+      "expected": "200 + total_hours字段",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-001-room",
+      "name": "下载room模板",
+      "status": "PASS",
+      "expected": "200 + Excel文件",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-001-teacher",
+      "name": "下载teacher模板",
+      "status": "PASS",
+      "expected": "200 + Excel文件",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-001-class",
+      "name": "下载class模板",
+      "status": "PASS",
+      "expected": "200 + Excel文件",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-001-course",
+      "name": "下载course模板",
+      "status": "PASS",
+      "expected": "200 + Excel文件",
+      "actual": "200",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-002",
+      "name": "空文件验证",
+      "status": "PASS",
+      "expected": "400 Bad Request",
+      "actual": "400",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-003",
+      "name": "不支持类型验证",
+      "status": "FAIL",
+      "expected": "400",
+      "actual": "500: {\n  \"error\": \"\\u5bfc\\u5165\\u5931\\u8d25: File is not a zip file\"\n}\n",
+      "notes": ""
+    },
+    {
+      "case_id": "IMP-004",
+      "name": "不支持文件格式验证",
+      "status": "PASS",
+      "expected": "400 Bad Request",
+      "actual": "400",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-001",
+      "name": "时间池总课时",
+      "status": "PASS",
+      "expected": "880课时",
+      "actual": "880课时",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-002",
+      "name": "上午课时数",
+      "status": "PASS",
+      "expected": "4课时",
+      "actual": "4课时",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-003",
+      "name": "下午课时数",
+      "status": "PASS",
+      "expected": "4课时",
+      "actual": "4课时",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-004",
+      "name": "晚上课时数",
+      "status": "PASS",
+      "expected": "3课时",
+      "actual": "3课时",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-005",
+      "name": "排课算法生成课表",
+      "status": "PASS",
+      "expected": "有课表记录",
+      "actual": "共16个时段",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-006",
+      "name": "课时满足64课时",
+      "status": "PASS",
+      "expected": ">=64课时",
+      "actual": "64课时",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-007",
+      "name": "无失败课程",
+      "status": "PASS",
+      "expected": "0个失败",
+      "actual": "失败: 0",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-008",
+      "name": "排课日志记录",
+      "status": "PASS",
+      "expected": "有日志",
+      "actual": "共1条",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-009",
+      "name": "多课程排课",
+      "status": "PASS",
+      "expected": "有课表记录",
+      "actual": "共48个时段",
+      "notes": ""
+    },
+    {
+      "case_id": "SCH-010",
+      "name": "教师时段无冲突",
+      "status": "PASS",
+      "expected": "无重复时段",
+      "actual": "T1占用32个时段",
+      "notes": ""
+    },
+    {
+      "case_id": "SQ-001",
+      "name": "按班级查询课表",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "结果: 2条",
+      "notes": ""
+    },
+    {
+      "case_id": "SQ-002",
+      "name": "按教师查询课表",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "结果: 1条",
+      "notes": ""
+    },
+    {
+      "case_id": "SQ-003",
+      "name": "按教室查询课表",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "结果: 0条",
+      "notes": ""
+    },
+    {
+      "case_id": "SQ-004",
+      "name": "周课表视图查询",
+      "status": "PASS",
+      "expected": "200 OK",
+      "actual": "课程: 2条, 含日期: True",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-001",
+      "name": "上午4课时",
+      "status": "PASS",
+      "expected": "4课时",
+      "actual": "实际: 4课时",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-002",
+      "name": "下午4课时",
+      "status": "PASS",
+      "expected": "4课时",
+      "actual": "实际: 4课时",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-003",
+      "name": "晚上3课时",
+      "status": "PASS",
+      "expected": "3课时",
+      "actual": "实际: 3课时",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-004",
+      "name": "学期16周",
+      "status": "PASS",
+      "expected": "16周",
+      "actual": "实际: 16周",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-005",
+      "name": "周一至周五上课",
+      "status": "PASS",
+      "expected": "5个工作日",
+      "actual": "实际: ['monday', 'tuesday', 'wednesday', 'thursday', 'friday']",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-006",
+      "name": "3个大时段",
+      "status": "PASS",
+      "expected": "morning/afternoon/evening",
+      "actual": "实际: ['morning', 'afternoon', 'evening']",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-007",
+      "name": "节假日设置功能",
+      "status": "PASS",
+      "expected": "正常设置",
+      "actual": "节假日管理器已集成",
+      "notes": ""
+    },
+    {
+      "case_id": "REQ-001",
+      "name": "需求验证测试",
+      "status": "FAIL",
+      "expected": "正常执行",
+      "actual": "异常: Error, database must be initialized before opening a connection.",
+      "notes": ""
+    }
+  ]
+}

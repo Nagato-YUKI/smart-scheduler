@@ -1,7 +1,8 @@
 /**
  * ========================================
- *  排课系统 - 管理页面通用样式 (v1.0)
+ *  排课系统 - 管理页面通用样式 (v2.0)
  *  适用于课程/教师/班级/教室等管理页面
+ *  基于 Material Design + 8px 栅格系统
  * ========================================
  */
 
@@ -9,9 +10,22 @@
 
 /* ===== 管理页面容器 ===== */
 .management-page {
-  padding: 24px;
+  padding: var(--space-6);
   background: var(--bg-page);
   min-height: 100%;
+}
+
+/* ===== 搜索筛选栏 ===== */
+.search-bar {
+  display: flex;
+  align-items: center;
+  gap: var(--space-3);
+  margin-bottom: var(--space-4);
+  flex-wrap: wrap;
+}
+
+.search-bar .el-input {
+  max-width: 300px;
 }
 
 /* ===== 卡片容器 ===== */
@@ -29,7 +43,7 @@
 /* ===== 卡片头部 ===== */
 .management-page .el-card__header {
   border-bottom: 1px solid var(--border-light);
-  padding: 18px 24px;
+  padding: var(--space-5) var(--space-6);
   background: var(--bg-card);
 }
 
@@ -37,25 +51,32 @@
   display: flex;
   justify-content: space-between;
   align-items: center;
+  gap: var(--space-3);
 }
 
-.management-page .card-header > span {
+.management-page .card-header__title {
   font-size: var(--font-size-lg);
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   display: flex;
   align-items: center;
-  gap: 8px;
+  gap: var(--space-2);
   letter-spacing: 0.3px;
 }
 
-.management-page .card-header > span::before {
+.management-page .card-header__title::before {
   content: '';
   display: inline-block;
-  width: 3px;
-  height: 18px;
+  width: 4px;
+  height: 20px;
   background: linear-gradient(180deg, var(--color-primary-5), var(--color-primary-7));
   border-radius: 2px;
+}
+
+.management-page .card-header__actions {
+  display: flex;
+  align-items: center;
+  gap: var(--space-2);
 }
 
 /* ===== 操作按钮层次 ===== */
@@ -67,6 +88,7 @@
   border-radius: var(--radius-md);
   box-shadow: 0 2px 6px rgba(22, 93, 255, 0.25);
   transition: all var(--duration-base) var(--ease-out);
+  font-weight: var(--font-weight-medium);
 }
 
 .management-page .el-button--primary:hover {
@@ -160,6 +182,7 @@
   font-weight: var(--font-weight-semibold);
   color: var(--text-primary);
   font-size: var(--font-size-base);
+  padding: var(--space-3) 0;
 }
 
 .management-page .el-table__row {
@@ -191,15 +214,22 @@
 .management-page .el-table td.el-table__cell {
   color: var(--text-regular);
   font-size: var(--font-size-base);
-  padding: 12px 0;
+  padding: var(--space-3) 0;
+}
+
+/* ===== 操作列样式 ===== */
+.management-page .el-table .operation-cell {
+  display: flex;
+  align-items: center;
+  gap: var(--space-1);
 }
 
 /* ===== 分页器 ===== */
 .management-page .pagination {
-  margin-top: 20px;
+  margin-top: var(--space-5);
   display: flex;
   justify-content: flex-end;
-  padding: 8px 0;
+  padding: var(--space-2) 0;
 }
 
 .management-page .el-pagination {
@@ -232,7 +262,7 @@
 .management-page .el-dialog__header {
   background: linear-gradient(180deg, var(--color-neutral-1) 0%, var(--bg-card) 100%);
   border-bottom: 1px solid var(--border-light);
-  padding: 18px 24px;
+  padding: var(--space-5) var(--space-6);
 }
 
 .management-page .el-dialog__title {
@@ -242,11 +272,11 @@
 }
 
 .management-page .el-dialog__body {
-  padding: 24px;
+  padding: var(--space-6);
 }
 
 .management-page .el-dialog__footer {
-  padding: 16px 24px;
+  padding: var(--space-4) var(--space-6);
   border-top: 1px solid var(--border-light);
   background: var(--color-neutral-1);
 }
@@ -283,4 +313,61 @@
 /* ===== 加载状态 ===== */
 .management-page .el-table.is-loading .el-table__body-wrapper {
   min-height: 300px;
+}
+
+/* ===== Tag 标签美化 ===== */
+.management-page .el-tag {
+  border-radius: var(--radius-base);
+  font-weight: var(--font-weight-medium);
+  border: none;
+}
+
+.management-page .el-tag--success {
+  background: linear-gradient(135deg, var(--color-success-1), var(--color-success-2));
+  color: var(--color-success-8);
+}
+
+.management-page .el-tag--danger {
+  background: linear-gradient(135deg, var(--color-error-1), var(--color-error-2));
+  color: var(--color-error-8);
+}
+
+.management-page .el-tag--warning {
+  background: linear-gradient(135deg, var(--color-warning-1), var(--color-warning-2));
+  color: var(--color-warning-8);
+}
+
+.management-page .el-tag--info {
+  background: linear-gradient(135deg, var(--color-info-1), var(--color-info-2));
+  color: var(--color-info-8);
+}
+
+/* ===== 空状态 ===== */
+.management-page .el-empty {
+  padding: var(--space-10) 0;
+}
+
+/* ===== 响应式 ===== */
+@media (max-width: 768px) {
+  .management-page {
+    padding: var(--space-4);
+  }
+
+  .management-page .el-card__header {
+    padding: var(--space-4);
+  }
+
+  .management-page .card-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .management-page .card-header__actions {
+    width: 100%;
+  }
+
+  .management-page .card-header__actions .el-button {
+    flex: 1;
+  }
 }

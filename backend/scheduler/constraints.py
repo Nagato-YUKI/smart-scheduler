@@ -1,188 +1,113 @@
-from typing import Dict, List, Tuple, Set, Optional
-from .time_pool import TimePool
-from .room_allocator import RoomAllocator
-from .holiday_manager import HolidayManager
+from typing import Dict, List, Tuple, Optional, Set
 
 
 class ConstraintChecker:
+    MAX_TEACHER_SESSIONS_PER_WEEK = 5
+
     def __init__(self):
-        self.hard_constraints = [
-            self._check_teacher_conflict,
-            self._check_class_conflict,
-            self._check_room_conflict,
-            self._check_holiday_conflict,
-            self._check_teacher_capacity,
-            self._check_class_capacity,
-            self._check_room_capacity,
-            self._check_room_type_match,
-            self._check_fixed_room,
-            self._check_time_slot_availability,
-        ]
-        self.soft_constraints = [
-            self._check_teacher_day_concentration,
-            self._check_class_day_balance,
-            self._check_period_preference,
-        ]
+        self.violations = []
 
-    def check_all_hard_constraints(self, course, room_id: str, week: int, day: str,
-                                   period: str, schedule: Dict, time_pool: TimePool,
-                                   room_allocator: RoomAllocator, holiday_manager: HolidayManager) -> Tuple[bool, List[str]]:
-        violations = []
-        for constraint in self.hard_constraints:
-            is_valid, violation_msg = constraint(course, room_id, week, day, period, schedule, time_pool, room_allocator, holiday_manager)
-            if not is_valid:
-                violations.append(violation_msg)
-                return False, violations
-        return True, []
+    def check_holiday_conflict(self, week: int, day: str, time_pool, holiday_manager) -> bool:
+        date = time_pool.get_date(week, day)
+        if date and holiday_manager.is_holiday(date):
+            return False
+        return True
 
-    def check_soft_constraints(self, course, room_id: str, week: int, day: str,
-                               period: str, schedule: Dict, time_pool: TimePool,
-                               room_allocator: RoomAllocator, holiday_manager: HolidayManager) -> Tuple[float, List[str]]:
-        total_score = 0.0
-        warnings = []
-        for constraint in self.soft_constraints:
-            score, warning_msg = constraint(course, room_id, week, day, period, schedule, time_pool, room_allocator, holiday_manager)
-            total_score += score
-            if warning_msg:
-                warnings.append(warning_msg)
-        return total_score / len(self.soft_constraints), warnings
+    def check_fixed_room(self, course, room_id: str, room_allocator) -> bool:
+        if not hasattr(course, 'fixed_room_id') or not course.fixed_room_id:
+            return True
+        return course.fixed_room_id == room_id
 
-    def _check_teacher_conflict(self, course, room_id: str, week: int, day: str,
-                                period: str, schedule: Dict, *args) -> Tuple[bool, str]:
-        teacher_id = getattr(course, 'teacher_id', None)
-        if not teacher_id:
-            return True, ""
-        slot_key = f"W{week}_D{day}_{period}"
-        for key, sessions in schedule.items():
-            if key == slot_key:
-                for session in sessions:
-                    if session.get('teacher_id') == teacher_id:
-                        return False, f"教师 {teacher_id} 在 {slot_key} 有课程冲突"
-        return True, ""
+    def check_capacity(self, course, room) -> bool:
+        required_capacity = getattr(course, 'student_count', 0)
+        return room.capacity >= required_capacity
 
-    def _check_class_conflict(self, course, room_id: str, week: int, day: str,
-                              period: str, schedule: Dict, *args) -> Tuple[bool, str]:
-        class_id = getattr(course, 'class_id', None)
-        if not class_id:
-            return True, ""
-        slot_key = f"W{week}_D{day}_{period}"
-        for key, sessions in schedule.items():
-            if key == slot_key:
-                for session in sessions:
-                    if session.get('class_id') == class_id:
-                        return False, f"班级 {class_id} 在 {slot_key} 有课程冲突"
-        return True, ""
-
-    def _check_room_conflict(self, course, room_id: str, week: int, day: str,
-                             period: str, schedule: Dict, *args) -> Tuple[bool, str]:
-        if not room_id:
-            return True, ""
-        slot_key = f"W{week}_D{day}_{period}"
-        for key, sessions in schedule.items():
-            if key == slot_key:
-                for session in sessions:
-                    if session.get('room_id') == room_id:
-                        return False, f"教室 {room_id} 在 {slot_key} 有课程冲突"
-        return True, ""
-
-    def _check_holiday_conflict(self, course, room_id: str, week: int, day: str,
-                                period: str, schedule: Dict, time_pool: TimePool,
-                                room_allocator: RoomAllocator, holiday_manager: HolidayManager) -> Tuple[bool, str]:
-        date_obj = time_pool.get_date(week, day)
-        if date_obj and holiday_manager.is_holiday(date_obj):
-            return False, f"{day} 是节假日 ({holiday_manager.get_holiday_name(date_obj)})"
-        return True, ""
-
-    def _check_teacher_capacity(self, course, room_id: str, week: int, day: str,
-                                period: str, schedule: Dict, time_pool: TimePool, *args) -> Tuple[bool, str]:
-        teacher_id = getattr(course, 'teacher_id', None)
-        if not teacher_id:
-            return True, ""
-        if not time_pool.check_teacher_capacity(teacher_id, week, day):
-            return False, f"教师 {teacher_id} 在 {week}/{day} 已达每日最大课时"
-        return True, ""
-
-    def _check_class_capacity(self, course, room_id: str, week: int, day: str,
-                              period: str, schedule: Dict, time_pool: TimePool, *args) -> Tuple[bool, str]:
-        class_id = getattr(course, 'class_id', None)
-        if not class_id:
-            return True, ""
-        if not time_pool.check_class_capacity(class_id, week, day):
-            return False, f"班级 {class_id} 在 {week}/{day} 已达每日最大课时"
-        return True, ""
-
-    def _check_room_capacity(self, course, room_id: str, week: int, day: str,
-                             period: str, schedule: Dict, time_pool: TimePool,
-                             room_allocator: RoomAllocator, *args) -> Tuple[bool, str]:
-        if not room_id:
-            return True, ""
-        if not room_allocator.is_room_available(room_id, week, day, period):
-            return False, f"教室 {room_id} 在 {week}/{day}/{period} 已被占用"
-        return True, ""
-
-    def _check_room_type_match(self, course, room_id: str, week: int, day: str,
-                               period: str, schedule: Dict, time_pool: TimePool,
-                               room_allocator: RoomAllocator, *args) -> Tuple[bool, str]:
-        if not room_id:
-            return True, ""
-        room = room_allocator.get_room(room_id)
+    def check_room_type(self, course, room) -> bool:
         required_type = getattr(course, 'room_type', 'normal')
-        if room and room.room_type != required_type and required_type != 'normal':
-            if room.room_type == 'normal':
-                pass
-            else:
-                return False, f"教室 {room_id} 类型 {room.room_type} 不匹配课程要求 {required_type}"
-        return True, ""
+        return room.room_type == required_type
 
-    def _check_fixed_room(self, course, room_id: str, week: int, day: str,
-                          period: str, schedule: Dict, *args) -> Tuple[bool, str]:
-        fixed_room_id = getattr(course, 'fixed_room_id', None)
-        if fixed_room_id and room_id != fixed_room_id:
-            return False, f"课程要求固定教室 {fixed_room_id}，但尝试分配到 {room_id}"
-        return True, ""
-
-    def _check_time_slot_availability(self, course, room_id: str, week: int, day: str,
-                                      period: str, schedule: Dict, time_pool: TimePool, *args) -> Tuple[bool, str]:
-        if not time_pool.is_available(week, day, period):
-            return False, f"时段 {week}/{day}/{period} 不可用"
-        return True, ""
-
-    def _check_teacher_day_concentration(self, course, room_id: str, week: int, day: str, period: str, schedule: Dict, *args) -> Tuple[float, str]:
-        teacher_id = getattr(course, 'teacher_id', None)
-        if not teacher_id:
-            return 1.0, ""
-        teacher_days = set()
+    def check_teacher_week_limit(self, teacher_id: str, week: int, schedule: Dict) -> bool:
+        count = 0
         for key, sessions in schedule.items():
             for session in sessions:
-                if session.get('teacher_id') == teacher_id:
-                    parts = key.split('_')
-                    if len(parts) >= 2:
-                        teacher_days.add(parts[1])
-        if day in teacher_days:
-            return 1.0, ""
-        if len(teacher_days) >= 4:
-            return 0.3, f"教师 {teacher_id} 已在一周 {len(teacher_days)} 天有课"
-        return 0.8, ""
+                if session.get('teacher_id') == teacher_id and session.get('week') == week:
+                    count += 1
 
-    def _check_class_day_balance(self, course, room_id: str, week: int, day: str,
-                                 period: str, schedule: Dict, *args) -> Tuple[float, str]:
-        class_id = getattr(course, 'class_id', None)
-        if not class_id:
-            return 1.0, ""
-        class_day_courses = 0
+        return count < self.MAX_TEACHER_SESSIONS_PER_WEEK
+
+    def check_teacher_conflict(self, teacher_id: str, week: int, day: str, period: str,
+                               schedule: Dict) -> bool:
+        slot_key = f"W{week}_D{day}_{period}"
+
         for key, sessions in schedule.items():
-            parts = key.split('_')
-            if len(parts) >= 2 and parts[1] == f"D{day}":
-                for session in sessions:
-                    if session.get('class_id') == class_id:
-                        class_day_courses += 1
-        if class_day_courses >= 3:
-            return 0.5, f"班级 {class_id} 在 {day} 已有 {class_day_courses} 节课"
-        return 1.0, ""
+            for session in sessions:
+                if (session.get('teacher_id') == teacher_id and
+                        key == slot_key):
+                    return False
 
-    def _check_period_preference(self, course, room_id: str, week: int, day: str,
-                                 period: str, schedule: Dict, *args) -> Tuple[float, str]:
-        preferred_periods = getattr(course, 'preferred_periods', ["morning", "afternoon", "evening"])
-        if period in preferred_periods:
-            return 1.0, ""
-        return 0.5, f"时段 {period} 不是课程首选"
+        return True
+
+    def check_room_conflict(self, room_id: str, week: int, day: str, period: str,
+                            room_allocator) -> bool:
+        return room_allocator.is_room_available(room_id, week, day, period)
+
+    def check_class_conflict(self, class_id: str, week: int, day: str, period: str,
+                             schedule: Dict) -> bool:
+        slot_key = f"W{week}_D{day}_{period}"
+
+        for key, sessions in schedule.items():
+            for session in sessions:
+                if (session.get('class_id') == class_id and
+                        key == slot_key):
+                    return False
+
+        return True
+
+    def check_time_slot_available(self, week: int, day: str, period: str, time_pool) -> bool:
+        return time_pool.is_available(week, day, period)
+
+    def check_all_hard_constraints(self, course, room_id: str, week: int, day: str,
+                                   period: str, schedule: Dict, time_pool, room_allocator,
+                                   holiday_manager) -> Tuple[bool, List[str]]:
+        violations = []
+        room = room_allocator.get_room(room_id)
+
+        if room is None:
+            violations.append(f"教室 {room_id} 不存在")
+            return False, violations
+
+        if not self.check_time_slot_available(week, day, period, time_pool):
+            violations.append(f"时段 {week}/{day}/{period} 不可用")
+
+        if not self.check_holiday_conflict(week, day, time_pool, holiday_manager):
+            violations.append(f"时段 {week}/{day}/{period} 是节假日")
+
+        if not self.check_fixed_room(course, room_id, room_allocator):
+            violations.append(f"课程需要固定教室 {course.fixed_room_id}")
+
+        if not self.check_capacity(course, room):
+            violations.append(f"教室容量不足: {room.capacity} < {getattr(course, 'student_count', 0)}")
+
+        if not self.check_room_type(course, room):
+            violations.append(f"教室类型不匹配: {room.room_type} != {getattr(course, 'room_type', 'normal')}")
+
+        teacher_id = getattr(course, 'teacher_id', None)
+        if teacher_id:
+            if not self.check_teacher_week_limit(teacher_id, week, schedule):
+                violations.append(f"教师 {teacher_id} 在周次 {week} 课时已达上限")
+
+            if not self.check_teacher_conflict(teacher_id, week, day, period, schedule):
+                violations.append(f"教师 {teacher_id} 在时段 {week}/{day}/{period} 有冲突")
+
+        if not self.check_room_conflict(room_id, week, day, period, room_allocator):
+            violations.append(f"教室 {room_id} 在时段 {week}/{day}/{period} 有冲突")
+
+        class_id = getattr(course, 'class_id', None)
+        if class_id:
+            if not self.check_class_conflict(class_id, week, day, period, schedule):
+                violations.append(f"班级 {class_id} 在时段 {week}/{day}/{period} 有冲突")
+
+        return len(violations) == 0, violations
+
+    def clear_violations(self):
+        self.violations = []

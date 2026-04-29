@@ -1,4 +1,0 @@
-# This is an auto-generated Procfile for Render deployment
-# Do not edit manually
-
-web: gunicorn --bind 0.0.0.0:$PORT --chdir backend wsgi:app

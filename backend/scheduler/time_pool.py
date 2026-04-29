@@ -1,84 +1,114 @@
-from typing import Dict, List, Set, Tuple, Optional
-from datetime import datetime, timedelta, date
-from collections import defaultdict
-import logging
+from datetime import datetime, timedelta
+from typing import List, Dict, Tuple
+
+
+class TimeSlot:
+    def __init__(self, week: int, day: int, period: str):
+        self.week = week
+        self.day = day
+        self.period = period
+
+    def to_key(self) -> str:
+        return f"W{self.week}_D{self.day}_{self.period}"
+
+    def __repr__(self):
+        return f"TimeSlot(week={self.week}, day={self.day}, period={self.period})"
+
+    def __eq__(self, other):
+        if not isinstance(other, TimeSlot):
+            return False
+        return self.week == other.week and self.day == other.day and self.period == other.period
+
+    def __hash__(self):
+        return hash(self.to_key())
 
 
 class TimePool:
-    def __init__(self):
-        self.time_slots = set()
+    WEEKS = 16
+    DAYS = ["monday", "tuesday", "wednesday", "thursday", "friday"]
+    PERIODS = ["morning", "afternoon", "evening"]
+
+    PERIOD_HOURS = {
+        "morning": 4,
+        "afternoon": 4,
+        "evening": 3,
+    }
+
+    def __init__(self, start_date: str = None):
+        if start_date:
+            self.start_date = datetime.strptime(start_date, "%Y-%m-%d")
+        else:
+            self.start_date = datetime.now()
+
+        self.time_slots = []
         self.available_slots = set()
-        self.week_dates = {}
-        self.teacher_daily_sessions = defaultdict(lambda: defaultdict(int))
-        self.class_daily_sessions = defaultdict(lambda: defaultdict(int))
-        self.max_teacher_daily_sessions = 2
-        self.max_class_daily_sessions = 8
-        self.teacher_weekly_sessions = defaultdict(lambda: defaultdict(int))
-        self.max_teacher_weekly_sessions = 5
-        self.logger = logging.getLogger(__name__)
+        self.week_start_dates = {}
+        self._generate_time_slots()
 
-    def generate_time_slots(self, start_date: datetime, total_weeks: int = 16,
-                            school_days: List[str] = None, periods: Dict = None):
-        school_days = school_days or ["monday", "tuesday", "wednesday", "thursday", "friday"]
-        periods = periods or {
-            "morning": ["8:00-8:45", "8:55-9:40", "10:00-10:45", "10:55-11:40"],
-            "afternoon": ["14:00-14:45", "14:55-15:40", "16:00-16:45", "16:55-17:40"],
-            "evening": ["18:30-19:15", "19:25-20:10", "20:20-21:05"],
-        }
-        day_map = {
-            "monday": 0, "tuesday": 1, "wednesday": 2,
-            "thursday": 3, "friday": 4, "saturday": 5, "sunday": 6
-        }
-        for week in range(1, total_weeks + 1):
-            for day in school_days:
-                day_offset = day_map[day]
-                week_start = start_date + timedelta(weeks=week - 1)
-                current_date = week_start + timedelta(days=day_offset)
-                self.week_dates[(week, day)] = current_date
-                for period in periods:
-                    self.time_slots.add((week, day, period))
-                    self.available_slots.add((week, day, period))
+    def _generate_time_slots(self):
+        self.time_slots = []
+        self.available_slots = set()
 
-    def update_holidays(self, holiday_manager):
-        for week, day in list(self.available_slots):
-            date = self.get_date(week, day)
-            if date and holiday_manager.is_holiday(date):
-                for period in ["morning", "afternoon", "evening"]:
-                    self.available_slots.discard((week, day, period))
+        for week in range(1, self.WEEKS + 1):
+            week_start = self.start_date + timedelta(weeks=week - 1)
+            self.week_start_dates[week] = week_start
 
-    def get_date(self, week: int, day: str) -> Optional[date]:
-        return self.week_dates.get((week, day))
+            for day_idx, day_name in enumerate(self.DAYS):
+                day_date = week_start + timedelta(days=day_idx)
 
-    def is_available(self, week: int, day: str, period: str) -> bool:
-        return (week, day, period) in self.available_slots
+                for period in self.PERIODS:
+                    slot = TimeSlot(week, day_name, period)
+                    self.time_slots.append(slot)
+                    self.available_slots.add(slot.to_key())
+
+    def get_date(self, week: int, day_name: str) -> datetime:
+        if week not in self.week_start_dates:
+            return None
+
+        day_idx = self.DAYS.index(day_name)
+        return self.week_start_dates[week] + timedelta(days=day_idx)
+
+    def get_period_hours(self, period: str) -> int:
+        return self.PERIOD_HOURS.get(period, 0)
+
+    def get_week_day_date(self, week: int, day: str) -> datetime:
+        if week not in self.week_start_dates:
+            return None
+        day_idx = self.DAYS.index(day)
+        return self.week_start_dates[week] + timedelta(days=day_idx)
 
     def remove_slot(self, week: int, day: str, period: str):
-        self.available_slots.discard((week, day, period))
+        key = f"W{week}_D{day}_{period}"
+        self.available_slots.discard(key)
 
     def add_slot(self, week: int, day: str, period: str):
-        if (week, day, period) in self.time_slots:
-            self.available_slots.add((week, day, period))
+        key = f"W{week}_D{day}_{period}"
+        self.available_slots.add(key)
 
-    def get_available_slots(self) -> Set[Tuple]:
-        return self.available_slots.copy()
+    def is_available(self, week: int, day: str, period: str) -> bool:
+        key = f"W{week}_D{day}_{period}"
+        return key in self.available_slots
 
-    def initialize_teacher_constraints(self):
-        pass
+    def get_available_slots(self) -> List[TimeSlot]:
+        slots = []
+        for slot in self.time_slots:
+            if slot.to_key() in self.available_slots:
+                slots.append(slot)
+        return slots
 
-    def check_teacher_capacity(self, teacher_id: str, week: int, day: str) -> bool:
-        daily_count = self.teacher_daily_sessions[teacher_id].get(f"W{week}_D{day}", 0)
-        return daily_count < self.max_teacher_daily_sessions
+    def get_slots_by_week(self, week: int) -> List[TimeSlot]:
+        return [s for s in self.time_slots if s.week == week]
 
-    def record_teacher_session(self, teacher_id: str, week: int, day: str):
-        self.teacher_daily_sessions[teacher_id][f"W{week}_D{day}"] += 1
-        self.teacher_weekly_sessions[teacher_id][week] += 1
+    def get_slots_by_day(self, week: int, day: str) -> List[TimeSlot]:
+        return [s for s in self.time_slots if s.week == week and s.day == day]
 
-    def check_class_capacity(self, class_id: str, week: int, day: str) -> bool:
-        daily_count = self.class_daily_sessions[class_id].get(f"W{week}_D{day}", 0)
-        return daily_count < self.max_class_daily_sessions
+    def get_total_available_hours(self) -> int:
+        total = 0
+        for key in self.available_slots:
+            parts = key.split("_")
+            period = parts[2]
+            total += self.get_period_hours(period)
+        return total
 
-    def record_class_session(self, class_id: str, week: int, day: str):
-        self.class_daily_sessions[class_id][f"W{week}_D{day}"] += 1
-
-    def get_teacher_weekly_sessions(self, teacher_id: str, week: int) -> int:
-        return self.teacher_weekly_sessions[teacher_id].get(week, 0)
+    def reset(self):
+        self._generate_time_slots()

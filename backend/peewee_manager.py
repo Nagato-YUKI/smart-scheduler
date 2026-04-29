@@ -1,12 +1,6 @@
 from peewee import *
-from config import Config
 
-# 根据配置选择数据库类型
-if Config.DB_TYPE == "postgresql":
-    from playhouse.db_url import connect
-    _database = connect(Config.DATABASE)
-else:
-    _database = SqliteDatabase(Config.DATABASE)
+_database = SqliteDatabase(None)
 
 def get_db():
     return _database
@@ -35,6 +29,7 @@ class Teacher(BaseModel):
     teachable_courses = TextField(null=True)
     max_classes = IntegerField(default=5)
     max_weekly_sessions = IntegerField(default=5)
+    is_available = BooleanField(default=True)
 
 
 class SchoolClass(BaseModel):
@@ -42,6 +37,7 @@ class SchoolClass(BaseModel):
     name = CharField(max_length=100)
     student_count = IntegerField()
     department = CharField(max_length=100, null=True)
+    is_available = BooleanField(default=True)
 
 
 class Course(BaseModel):
@@ -56,6 +52,7 @@ class Course(BaseModel):
 class Holiday(BaseModel):
     date = DateField()
     name = CharField(max_length=100)
+    remark = CharField(max_length=200, null=True, default='')
 
 
 class TeachingClass(BaseModel):
@@ -63,8 +60,8 @@ class TeachingClass(BaseModel):
     school_class = ForeignKeyField(SchoolClass, backref='teaching_classes')
     teacher = ForeignKeyField(Teacher, backref='teaching_classes')
     assigned_room = ForeignKeyField(Room, backref='teaching_classes', null=True)
-    assigned_day = IntegerField()
-    assigned_period = CharField(max_length=20)
+    assigned_day = IntegerField(null=True)
+    assigned_period = CharField(max_length=20, null=True)
 
 
 class ScheduleEntry(BaseModel):

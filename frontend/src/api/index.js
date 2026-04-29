@@ -1,8 +1,8 @@
 import axios from 'axios'
 
 const api = axios.create({
-  baseURL: import.meta.env.VITE_API_BASE_URL ? `${import.meta.env.VITE_API_BASE_URL}/api` : '/api',
-  timeout: 15000,
+  baseURL: '/api',
+  timeout: 10000,
   headers: { 'Content-Type': 'application/json' }
 })
 
@@ -54,17 +54,25 @@ export const holidayApi = {
 }
 
 export const scheduleApi = {
-  run: (data) => api.post('/schedule/run', data),
+  run: (data) => api.post('/schedule/run', data, { timeout: 120000 }),
   getResults: (params) => api.get('/schedule/results', { params }),
   getWeekly: (params) => api.get('/schedule/weekly', { params }),
   adjust: (id, data) => api.put(`/schedule/adjust/${id}`, data),
   checkConflict: (teachingClassId, data) => api.post(`/schedule/check-conflict/${teachingClassId}`, data),
-  getStatistics: (params) => api.get('/schedule/statistics', { params })
+  getStatistics: (params) => api.get('/schedule/statistics', { params }),
+  clearAll: () => api.post('/schedule/clear-all'),
+  clear: () => api.delete('/schedule/clear')
 }
 
 export const importApi = {
   upload: (formData) => api.post('/import/upload', formData, { headers: { 'Content-Type': 'multipart/form-data' } }),
-  getTemplate: (type) => api.get(`/import/template/${type}`, { responseType: 'blob' })
+  getTemplate: (type) => {
+    return axios.get('/import/template/' + type, {
+      baseURL: '/api',
+      responseType: 'blob',
+      timeout: 10000
+    }).then(response => response.data)
+  }
 }
 
 export const statisticsApi = {
