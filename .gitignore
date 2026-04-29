@@ -50,3 +50,33 @@ node_modules/
 
 # Logs
 *.log
+
+# Test files
+test-results/
+test_results/
+*.test.js
+*.spec.js
+full_test.py
+run_full_test.py
+test_*.py
+test_*.json
+test_*.png
+test-*.json
+test-*.png
+regression_test_report.json
+
+# Build artifacts
+package.json
+package-lock.json
+*.zip
+
+# Deploy scripts
+push_to_github.py
+pack_*.py
+
+# Documentation (keep README.md only)
+使用文档.md
+*_GUIDE.md
+*_PROMPT.md
+feishu-*.json
+Procfile
